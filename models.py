@@ -1,8 +1,3 @@
-from tinydb import TinyDB, Query
-
-db = TinyDB('db.json')
-User = Query()
-
 class Tournament:
 
     def __init__(self, name, place, date, nb_tour=4):
@@ -22,10 +17,24 @@ class Player:
             self.prenom = prenom
             self.date_de_naissance = date_de_naissance
             self.sexe = sexe
-            self.classmeent = classement
+            self.classement = classement
+
+    def __str__(self):
+        return f"{self.nom},{self.prenom},{self.date_de_naissance},{self.sexe},{self.classement}"
 
 
 
 
+class Tours:
+    def __init__(self, add_players, enter_results ):
+        self.add_players = add_players
+        self.enter_results = enter_results
+
+
+
+
+
+class Matchs:
+    pass
 
 

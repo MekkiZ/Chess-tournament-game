@@ -1,4 +1,8 @@
-from models import Tournament, Player
+from models import Tournament, Player, Tours, Matchs
+from tinydb import TinyDB, Query
+
+db = TinyDB('db.json')
+User = Query()
 
 
 def create_tournat():
@@ -25,6 +29,7 @@ def add_players():
 
 def generate_match():
     print('match fight')
+
 
 
 def enter_results():
