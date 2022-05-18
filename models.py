@@ -1,14 +1,15 @@
 class Tournament:
 
-    def __init__(self, name, place, date, nb_tour=4):
+    def __init__(self, name, place, date, time, description,  nb_tour=4):
         self.name = name
         self.place = place
         self.date = date
         self.nb_tour = nb_tour
+        self.time = time
+        self.description = description
 
     def __str__(self):
         return f"{self.name},{self.place},{self.date}"
-
 
 
 class Player:
@@ -26,15 +27,17 @@ class Player:
 
 
 class Tours:
-    def __init__(self, add_players, enter_results ):
-        self.add_players = add_players
-        self.enter_results = enter_results
+    def __init__(self, players):
+        self.players = players
+        match = ([players], [results])
+
+ def __str__(self):
+        return f"{self.player_in_game},{self.results}"
 
 
-
-
-
-class Matchs:
-    pass
+class Match(Tours):
+    def __init__(self, players, results):
+        super().__init__(players)
+        self.results = results
 
 
