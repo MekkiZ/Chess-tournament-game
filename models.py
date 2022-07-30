@@ -5,7 +5,7 @@ class Tournament:
         self.date = date
         self.nb_tour = nb_tour
         self.time = time
-        self.round_tourne = round_tourne
+        self.round_number = round_tourne
         self.description = description
 
     def __str__(self):
@@ -13,21 +13,20 @@ class Tournament:
 
 
 class Player:
-    def __init__(self, nom, prenom, date_de_naissance, sexe, rank):
-        self.nom = nom
-        self.prenom = prenom
+    def __init__(self, nom, date_de_naissance, sexe, rank):
+        self.nom= nom
         self.date_de_naissance = date_de_naissance
         self.sexe = sexe
         self.rank = rank
 
     def __str__(self):
-        return f"{self.nom}, {self.prenom}, {self.date_de_naissance},{ self.sexe}, {self.rank}"
+        return f"{self.nom}, {self.date_de_naissance},{ self.sexe}, {self.rank}"
     def __repr__(self):
-        return f"{self.nom}, {self.prenom}, {self.date_de_naissance},{ self.sexe}, {self.rank}"
+        return f"{self.nom}, {self.date_de_naissance},{ self.sexe}, {self.rank}"
 
 
 
-class Tours:
+class Round:
     def __init__(self, match, results, round_number, date_begin, date_end):
         self.match = match
         self.results = results

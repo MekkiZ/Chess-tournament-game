@@ -1,40 +1,54 @@
-from models import Tournament, Player, Tours
-import random
+from models import Tournament, Player, Round
+import random, datetime
 
+nombre_tour = 4
 
-def create_tournat():
+def create_tournant():
 
     print('tournoir numero 1')
-    name = input("Renseigner un nom pour le tournoi")
-    place = input("Renseigner un nom pour le lieu")
-    date = input("Renseigner un nom pour la date")
-    time = input("Renseigner le temps")
-    description = input("Renseigner une description")
-    round_tourne = input("Renseigner le nombre de rounds de ce tournoi" )
+    name = str(input("Renseigner un nom pour le tournoi "))
+    place = input("Renseigner un nom pour le lieu ")
+    date = input("entrer la date sous le format 'dd/mm/yy' : ")
+    day, month, year = date.split('/')
+    is_validate = True
 
+    try:
+        datetime.datetime(int(year), int(month), int(day))
+    except ValueError:
+        is_validate = False
+
+    if (is_validate):
+        pass
+    else:
+        print("Input date is not valid..")
+
+    time = input("Renseigner le temps ")
+    description = input("Renseigner une description ")
+    round_tourne = input("Renseigner le chiffre rounds" )
     tournament = Tournament(name, place, date, time, round_tourne, description)
+
+    return tournament
 
 
 
 def add_players():
-    list_player = []
     print('nouveau joueur')
-    nom = input("Renseigner votre nom ")
-    prenoms = input("Renseigner votre prénom ")
+    name = input("Renseigner votre nom ")
     date_de_naissance = input("Renseigner votre date de naissance ")
     sexe = input("Renseigner votre genre")
     rank = input("Renseigner votre classement ")
-    players = Player(nom, prenoms, date_de_naissance, sexe, rank)
+    players = Player(name, date_de_naissance, sexe, rank)
 
 
     return players
+
 
 
 def generate_match():
     """
     algo suisse
     """
-    add_players()
+
 
 
 
@@ -50,7 +64,7 @@ def main_menu():
 
 def run():
 
-    create_tournat()
+    create_tournant()
     add_players()
 
 
