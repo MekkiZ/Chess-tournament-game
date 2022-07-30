@@ -69,6 +69,11 @@ class Controller:
         return tournant_save_data
 
     def round(self):
+        """
+        partie demande au mentor
+        """
+
+        pass
 
 
 
