@@ -14,26 +14,26 @@ class Tournament:
 
 class Player:
     def __init__(self, nom, date_de_naissance, sexe, rank):
-        self.nom= nom
+        self.nom = nom
         self.date_de_naissance = date_de_naissance
         self.sexe = sexe
         self.rank = rank
 
     def __str__(self):
-        return f"{self.nom}, {self.date_de_naissance},{ self.sexe}, {self.rank}"
-    def __repr__(self):
-        return f"{self.nom}, {self.date_de_naissance},{ self.sexe}, {self.rank}"
+        return f"{self.nom}, {self.date_de_naissance},{self.sexe}, {self.rank}"
 
+    def __repr__(self):
+        return f"{self.nom}, {self.date_de_naissance},{self.sexe}, {self.rank}"
 
 
 class Round:
-    def __init__(self, matchs, results, round_number, date_begin, date_end):
+    def __init__(self, matchs, round_number, date_begin, date_end, score):
         self.matchs = matchs
-        self.results = results
         self.round_number = round_number
         self.date_begin = date_begin
         self.date_end = date_end
+        self.score = score
 
     def __str__(self):
-        return f"{self.matchs},{self.results},{self.round_number},{self.date_begin}, {self.date_end}"
+        return f"{self.matchs},{self.round_number},{self.date_begin}, {self.date_end}, {self.score}"
 

@@ -1,10 +1,10 @@
 from models import Tournament, Player, Round
-import random, datetime
+import datetime
 
 nombre_tour = 4
 
-def create_tournant():
 
+def create_tournant():
     print('tournoir numero 1')
     name = str(input("Renseigner un nom pour le tournoi "))
     place = input("Renseigner un nom pour le lieu ")
@@ -24,11 +24,10 @@ def create_tournant():
 
     time = input("Renseigner le temps ")
     description = input("Renseigner une description ")
-    round_tourne = input("Renseigner le chiffre rounds" )
+    round_tourne = input("Renseigner le chiffre rounds")
     tournament = Tournament(name, place, date, time, round_tourne, description)
 
     return tournament
-
 
 
 def add_players():
@@ -36,40 +35,30 @@ def add_players():
     name = input("Renseigner votre nom ")
     date_de_naissance = input("Renseigner votre date de naissance ")
     sexe = input("Renseigner votre genre")
-    rank = input("Renseigner votre classement ")
+    rank = int(input("Renseigner votre classement "))
     players = Player(name, date_de_naissance, sexe, rank)
-
 
     return players
 
 
 
-def generate_match():
-    """
-    algo suisse
-    """
+
 
 
 
 
 def enter_results():
-
-    enter_results_input = input("Entrer vos résultat : ")
+    enter_results_input = int(input("Entrer vos résultat : "))
+    return enter_results_input
 
 
 def main_menu():
     pass
 
 
-
 def run():
-
     create_tournant()
     add_players()
-
-
-
-
 
 
 if __name__ == "__main__":

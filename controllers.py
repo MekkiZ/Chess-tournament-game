@@ -1,24 +1,28 @@
-from models import Tournament, Player, Round
-from view import add_players, create_tournant, generate_match, enter_results, nombre_tour
+from view import add_players, create_tournant, enter_results, nombre_tour
+from models import Round
 from tinydb import TinyDB, Query
+import random
+from operator import itemgetter
 
 db = TinyDB("db.json")
 
-nb_players = 2
+nb_players = 4
+nb_player_for_swiss = int(nb_players / 2)
 ration_result_match = 2
+
 
 class Controller:
 
     def __init__(self):
         # models
 
-        self.results_data = []
+        self.tournant_data = []
+        self.data_rank_players = []
         self.data_name_players = []
         self.tournant_save_data = []
         self.table_save_players = []
         self.players_information = []
-
-        self.tournant_data = []
+        self.tours = []
         self.tournoi_table = db.table("tournoi")
         self.players_table = db.table("players")
 
@@ -45,7 +49,7 @@ class Controller:
             # players_table.all()
             self.table_save_players.append(serialized_players)
             self.players_table.insert_multiple(self.table_save_players)
-            # print(self.table_save_players)
+        # print(self.table_save_players)
 
         return self.table_save_players
 
@@ -69,25 +73,37 @@ class Controller:
         return self.tournant_save_data
 
     def get_data_player(self):
-
         get_date_from_list = self.table_save_players
         self.data_name_players = [d['players_name'] for d in get_date_from_list]
+        #print(self.data_name_players)
 
         return self.data_name_players
 
-    def get_results_data(self):
-        pass
-        
-    def creat_round(self):
-        """
-        un tour est une liste de match
-        1re tour = 4 matchs
-        2tr = 2 matchs
-        3tr = 1 match
-        """
+    def get_rank_players(self):
+        # print(self.table_save_players)
 
-        match = (self.data_name_players, [str(enter_results())])
-        #print(match)
+        for player in self.table_save_players:
+            self.data_rank_players.insert(player["player_rank"] - 1, player)  # trier par rangs
+            # print(player["player_rank"])
+
+        self.data_rank_players = sorted(self.data_rank_players, key=itemgetter('player_rank'))
+        # print(self.data_rank_players)
+
+    def get_data_score(self):
+
+        match = ([self.data_name_players[0] + " : " + str(enter_results())],
+                 [self.data_name_players[1] + " : " + str(enter_results())])
+
+    def create_sys_swiss_paring(self):
+
+        for x in range(0, nb_player_for_swiss):  # create first tour of tournemant
+            match_round_1 = self.data_rank_players[x]
+            match_round_1_adversaire = self.data_rank_players[x + nb_player_for_swiss]
+            match_tour1_vs = "{} vs {}".format(match_round_1, match_round_1_adversaire)
+
+            print(match_round_1)
+
+
 
 
 controller = Controller()
@@ -95,5 +111,6 @@ controller.add_player()
 controller.add_players_data()
 # controller.create_tournant()
 controller.get_data_player()
-controller.get_results_data()
-controller.creat_round()
+# controller.get_data_score()
+controller.get_rank_players()
+controller.create_sys_swiss_paring()
