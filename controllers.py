@@ -97,9 +97,10 @@ class Controller:
     def create_sys_swiss_paring(self):
 
         for x in range(0, nb_player_for_swiss):  # create first tour of tournemant
-            match_round_1 = self.data_rank_players[x]["players_name"]
+            match_round_1 = self.data_rank_players[x]["players_name"] # get only name in function to his rank_players
             match_round_1_adversaire = self.data_rank_players[x + nb_player_for_swiss]["players_name"]
             print("{} vs {}".format(match_round_1, match_round_1_adversaire))
+
 
 
 
