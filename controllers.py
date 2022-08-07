@@ -1,5 +1,5 @@
 from view import add_players, create_tournant, enter_results, nombre_tour
-from models import Round
+
 from tinydb import TinyDB, Query
 import random
 from operator import itemgetter
@@ -75,7 +75,7 @@ class Controller:
     def get_data_player(self):
         get_date_from_list = self.table_save_players
         self.data_name_players = [d['players_name'] for d in get_date_from_list]
-        #print(self.data_name_players)
+        # print(self.data_name_players)
 
         return self.data_name_players
 
@@ -97,11 +97,10 @@ class Controller:
     def create_sys_swiss_paring(self):
 
         for x in range(0, nb_player_for_swiss):  # create first tour of tournemant
-            match_round_1 = self.data_rank_players[x]
-            match_round_1_adversaire = self.data_rank_players[x + nb_player_for_swiss]
-            match_tour1_vs = "{} vs {}".format(match_round_1, match_round_1_adversaire)
+            match_round_1 = self.data_rank_players[x]["players_name"]
+            match_round_1_adversaire = self.data_rank_players[x + nb_player_for_swiss]["players_name"]
+            print("{} vs {}".format(match_round_1, match_round_1_adversaire))
 
-            print(match_round_1)
 
 
 

@@ -41,8 +41,8 @@ def add_players():
     return players
 
 
-
-
+def round_player():
+    tour = [ ]
 
 
 
