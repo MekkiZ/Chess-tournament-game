@@ -1,10 +1,13 @@
-from view import add_players, create_tournant, enter_results, nombre_tour
+from view import add_players, create_tournant, enter_results, nombre_tour, round_player
 
 from tinydb import TinyDB, Query
 import random
 from operator import itemgetter
 
 db = TinyDB("db.json")
+User = Query()
+players = db.table("players")
+tournois = db.table("tournoi")
 
 nb_players = 4
 nb_player_for_swiss = int(nb_players / 2)
@@ -41,7 +44,8 @@ class Controller:
             serialized_players = {"players_name": player.nom,
                                   "player_birthday": player.date_de_naissance,
                                   "player_sexe": player.sexe,
-                                  "player_rank": player.rank
+                                  "player_rank": player.rank,
+                                  "player_score": player.score
                                   }
 
             self.players_table.truncate()  # clear the table first
@@ -62,7 +66,7 @@ class Controller:
                                   "tournoi_date": tournoi.date,
                                   "tournoi_tour": nombre_tour,
                                   "tournoi_time": tournoi.time,
-                                  "tournoi_number_round": tournoi.round_number,
+                                  "tournoi_number_round": [],
                                   "tournoi_desc": tournoi.description,
                                   }
 
@@ -94,16 +98,44 @@ class Controller:
         match = ([self.data_name_players[0] + " : " + str(enter_results())],
                  [self.data_name_players[1] + " : " + str(enter_results())])
 
-    def create_sys_swiss_paring(self):
+    def create_sys_swiss_paring_first_tour(self):  # mettre le numero de tour pour comprendre quels algo mettre
 
         for x in range(0, nb_player_for_swiss):  # create first tour of tournemant
-            match_round_1 = self.data_rank_players[x]["players_name"] # get only name in function to his rank_players
+            # score = [input('rensienger les resulta')]
+            match_round_1 = self.data_rank_players[x]["players_name"]
             match_round_1_adversaire = self.data_rank_players[x + nb_player_for_swiss]["players_name"]
-            print("{} vs {}".format(match_round_1, match_round_1_adversaire))
+            # show_match = ("{} vs {}".format(match_round_1, match_round_1_adversaire))
+            matchs_tour = match_round_1, match_round_1_adversaire
+            self.tours.append(matchs_tour)
+            score = round_player(match_round_1, match_round_1_adversaire)
+            if score == "1":
+               """ point = 1
+                print(matchs_tour[0] + " a ganger la la parti ")
+                players.update({'player_score': point}, User.players_name == str(matchs_tour[0]))"""
+               pass
+            elif score == "2":
+                """point = 1
+                #print(matchs_tour[1] + " a ganger  la parti ")
+                players.update({'player_score': point}, User.players_name == str(matchs_tour[1]))"""
+                pass
+            elif score == "3":
+                point = float(0.5)
+                for i in matchs_tour:
+                    print(i)
+                    players.update({'player_score': point}, User.players_name == str(i))
+                #print(f"cete parti est controller condition 3  {matchs_tour}")
+        # print(self.tours)
+        return
 
-
-
-
+    def created_round(self):
+        for tours in self.tours:
+            sereliaze_tours = {
+                "tour_number": tours.round_number,
+                "tour_matchs": self.tours,
+                "tour_debut": tours.date_begin,
+                "tour_fin": tours.date_end,
+                "tours_score": tours.score
+            }
 
 
 controller = Controller()
@@ -113,4 +145,4 @@ controller.add_players_data()
 controller.get_data_player()
 # controller.get_data_score()
 controller.get_rank_players()
-controller.create_sys_swiss_paring()
+controller.create_sys_swiss_paring_first_tour()

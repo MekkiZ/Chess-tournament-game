@@ -1,14 +1,11 @@
-list = []
 
 
-while True:
-  players = input("name : ")
-  if players == 'q':
-    break
-
-  list.append(players)
-
-print(list)
+"""
+[([players1 : score , player2 : score]) , [players1 : score , player2 : score], [players1 : score , player2 : score]]
 
 
 
+
+
+
+"""

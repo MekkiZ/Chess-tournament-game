@@ -1,4 +1,5 @@
 from models import Tournament, Player, Round
+
 import datetime
 
 nombre_tour = 4
@@ -36,30 +37,23 @@ def add_players():
     date_de_naissance = input("Renseigner votre date de naissance ")
     sexe = input("Renseigner votre genre")
     rank = int(input("Renseigner votre classement "))
-    players = Player(name, date_de_naissance, sexe, rank)
+    score = int(input("Renseigner le score de commencement "))
+    players = Player(name, date_de_naissance, sexe, rank, score)
 
     return players
 
 
-def round_player():
-    tour = [ ]
-
-
-
-
 def enter_results():
-    enter_results_input = int(input("Entrer vos résultat : "))
+    enter_results_input = input("Entrer vos résultat : ")
     return enter_results_input
 
 
-def main_menu():
-    pass
+def round_player(player_1, player_2):
+    round_number = input("renseigner le numero du tours joué : ")
+    date_begin = input(" entrer le debut du round en renseignement l'heure et la date( xx:xx XX/XX/XX) : ")
+    date_end = input(" entrer la fin du round en renseignement l'heure et la date( xx:xx XX/XX/XX) : ")
+    score = input(player_1 + " vs " + player_2 + "  tape le chiffre correspond du vainqueur ou de l'égalité? \n 1-" +
+                  player_1 + "\n 2 - " + player_2 + " \n 3 - egalité  \n")
 
+    return score
 
-def run():
-    create_tournant()
-    add_players()
-
-
-if __name__ == "__main__":
-    run()
