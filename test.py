@@ -1,11 +1,5 @@
+from tinydb import TinyDB, Query
 
-
-"""
-[([players1 : score , player2 : score]) , [players1 : score , player2 : score], [players1 : score , player2 : score]]
-
-
-
-
-
-
-"""
+db = TinyDB("db.json")
+User = Query()
+print(db.search(User.players == ' '))

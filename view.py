@@ -54,6 +54,10 @@ def round_player(player_1, player_2):
     date_end = input(" entrer la fin du round en renseignement l'heure et la date( xx:xx XX/XX/XX) : ")
     score = input(player_1 + " vs " + player_2 + "  tape le chiffre correspond du vainqueur ou de l'égalité? \n 1-" +
                   player_1 + "\n 2 - " + player_2 + " \n 3 - egalité  \n")
+    matchs = [player_1, player_2]
 
-    return score
+    round_db = Round(round_number, matchs, date_begin, date_end)
+    return score, round_db
+
+
 
