@@ -43,21 +43,21 @@ def add_players():
     return players
 
 
-def enter_results():
-    enter_results_input = input("Entrer vos résultat : ")
-    return enter_results_input
+def enter_round_number(enter_number):
+    print(enter_number)
+    return enter_number
 
 
 def round_player(player_1, player_2):
-    round_number = input("renseigner le numero du tours joué : ")
+    #round_number = input("Renseigner votre round")
     date_begin = input(" entrer le debut du round en renseignement l'heure et la date( xx:xx XX/XX/XX) : ")
     date_end = input(" entrer la fin du round en renseignement l'heure et la date( xx:xx XX/XX/XX) : ")
     score = input(player_1 + " vs " + player_2 + "  tape le chiffre correspond du vainqueur ou de l'égalité? \n 1-" +
                   player_1 + "\n 2 - " + player_2 + " \n 3 - egalité  \n")
     matchs = [player_1, player_2]
 
-    round_db = Round(round_number, matchs, date_begin, date_end)
-    return score, round_db
+    #round_db = Round(round_number, matchs, date_begin, date_end)
+    return score #, round_db
 
 
 
