@@ -4,6 +4,13 @@
 This app generate tournament with height players ( number by default ) with Swiss system.
 ## Setup
 Create a virtualenv for the project with Python 3.9.10
+
+You have to clone the repository first of all like this :
+```
+git clone https://github.com/MekkiZ/project_4.git
+```
+and then past this :
+
 ```
 python -m venv venv
 source venv/bin/activate
