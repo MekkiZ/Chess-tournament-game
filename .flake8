@@ -1,0 +1,6 @@
+[flake8]
+format = html
+htmldir = flake-report
+ignore = D401, flake8_html
+max-line-length = 119
+exclude = venv/, .git, .idea, __pycache__, README.md, db.json
