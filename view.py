@@ -2,6 +2,7 @@
 import logging
 import random
 import datetime
+
 from models import Tournament, Player
 
 
@@ -45,11 +46,11 @@ def create_tournant():
         datetime.datetime(int(year), int(month), int(day))
     except ValueError:
         is_validate = False
-
     if is_validate:
         pass
     else:
         logging.info("la saisie n'est pas valide")
+        return create_tournant()
 
     time = input(
         "Renseigner le contrôle du temps ( bullet, blitz ou un coup rapide ) : "
@@ -72,14 +73,25 @@ def add_players():
     :return: instance for serialized_player for tinyDB.
     """
     print("nouveau joueur")
-    name = str(input("Renseigner votre nom "))
-    date_de_naissance = str(input("Renseigner votre date de naissance "))
+    nom = str(input("Renseigner votre nom "))
+    date_b = input("entrer votre date de naissance 'dd/mm/yy' : ")
+    jour, mois, ans = date_b.split("/")
+    is_validate = True
+    try:
+        datetime.datetime(int(ans), int(mois), int(jour))
+    except ValueError:
+        is_validate = False
+    if is_validate:
+        pass
+    else:
+        logging.info("la saisie n'est pas valide")
+        return add_players()
     sexe = str(input("Renseigner votre genre"))
-    if name and date_de_naissance and sexe:
+    if nom and date_b and sexe:
         try:
             rank = int(input("Renseigner votre classement "))
             score = int(input("Renseigner le score de commencement "))
-            players = Player(name, date_de_naissance, sexe, rank, score)
+            players = Player(nom, date_b, sexe, rank, score)
             return players
         except ValueError:
             logging.info(

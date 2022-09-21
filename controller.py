@@ -3,21 +3,23 @@
 import sys
 import logging
 from operator import itemgetter
+from tabulate import tabulate
 from tinydb import TinyDB, Query
 from view import add_players, create_tournant, round_player, main_interface, date_begin_and_end
 from models import Round
 
 # We’ll start by setting up a TinyDB database.
 db = TinyDB("db.json")
+players_table = db.table("players")
 user = Query()
 
 # Variable global immutable.
-nb_players = 2
+nb_players = 8
 nb_player_for_swiss = int(nb_players / 2)
 nombre_tour = 4
 
 
-class Controller:
+class Controllers:
     """Controller Part : data traitement from view and Models."""
 
     def __init__(self):
@@ -47,10 +49,12 @@ class Controller:
         """
         choix_option = main_interface()
         if choix_option == "1":
-            self.add_player()
+            self.create_tournant()
         elif choix_option == "2":
             self.admin_power_change_rank()
         elif choix_option == "3":
+            sys.exit()
+        else:
             sys.exit()
 
     def add_player(self):
@@ -251,27 +255,42 @@ class Controller:
 
         This code serve to switch the rank of players to avoid same rank
         """
-        nom_joueur = input("veuillez entrer le nom du joeur concerné : ")
-        # search  in ddb
-        name_for_take_rank = self.players_table.search(user.players_name == nom_joueur)
-        for i in name_for_take_rank:
-            self.rank_save_for_replace = i["player_rank"]
-        rang_modif = int(input("quel est le rang que vous vouliez lui mettre :  "))
-        search_rank = self.players_table.search(user.player_rank == rang_modif)
-        for name_player_search in search_rank:
-            self.name_player_switch_rank = name_player_search["players_name"]
-        self.players_table.update(
-            {"player_rank": self.rank_save_for_replace},
-            user.players_name == str(self.name_player_switch_rank),
-        )
-        self.players_table.update(
-            {"player_rank": rang_modif}, user.players_name == nom_joueur
-        )
+        get_players_name_and_rank_score()
+        menu_main = input("si vous voulez revenir au menou principale veuillez taper 'q', sinon taper c ")
+        if menu_main == "q":
+            return main_interface()
+        elif menu_main == "c":
+            nom_joueur = input("veuillez entrer le nom du joeur concerné : ")
+            # search  in ddb
+            name_for_take_rank = self.players_table.search(user.players_name == nom_joueur)
+            for i in name_for_take_rank:
+                self.rank_save_for_replace = i["player_rank"]
+            rang_modif = int(input("quel est le rang que vous vouliez lui mettre :  "))
+            search_rank = self.players_table.search(user.player_rank == rang_modif)
+            for name_player_search in search_rank:
+                self.name_player_switch_rank = name_player_search["players_name"]
+            self.players_table.update(
+                {"player_rank": self.rank_save_for_replace},
+                user.players_name == str(self.name_player_switch_rank),
+            )
+            self.players_table.update(
+                {"player_rank": rang_modif}, user.players_name == nom_joueur
+            )
+            return Controllers.admin_power_change_rank(self)
+
+
+def get_players_name_and_rank_score():
+    liste = []
+    for i in players_table:
+        list_players = [i["players_name"], i["player_rank"], i["player_score"]]
+        liste.append(list_players)
+    col_names = ["Nom", "Rang", "Points"]
+    print(tabulate(liste, headers=col_names, tablefmt="fancy_grid"))
 
 
 def main():
     """Principal function to run all program."""
-    controller = Controller()
+    controller = Controllers()
     controller.interface_main_manu()
     controller.add_player()
     controller.add_players_data()
@@ -279,3 +298,4 @@ def main():
     controller.get_rank_players()
     controller.create_sys_swiss_paring()
     controller.created_round()
+    get_players_name_and_rank_score()
