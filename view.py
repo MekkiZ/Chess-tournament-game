@@ -22,7 +22,8 @@ def main_interface():
     print("Sélectionner votre choix: ")
     print("1. Créer un tournoi")
     print("2. Modifier le rang d'un joueur")
-    print("3. Quitter le jeu")
+    print("3. Rependre un tournoi ")
+    print("4. Quitter le jeu ")
     print("=========================")
     choix_option = input("S'il vous plait faite un choix >>  ")
     return choix_option
@@ -35,8 +36,8 @@ def create_tournant():
     :return : Instance for serialized_tournant in controller part.
     """
     logging.info("tournoi numéro 1")
-    name = str(input("Renseigner un nom pour le tournoi "))
-    place = input("Renseigner un nom pour le lieu ")
+    name = str(input("Renseigner un nom pour le tournoi: "))
+    place = input("Renseigner un nom pour le lieu: ")
 
     # condition for verify date has true.
     date = input("entrer la date sous le format 'dd/mm/yy' : ")
@@ -55,11 +56,12 @@ def create_tournant():
     time = input(
         "Renseigner le contrôle du temps ( bullet, blitz ou un coup rapide ) : "
     )
-    description = input("Renseigner une description ")
-    round_tourne = input("Renseigner le chiffre rounds")
+    description = input("Renseigner une description: ")
+    round_tourne = input("Renseigner le chiffre rounds: ")
+    status = input("Renseignez le status du tournoi ( 'debut' ou 'fin': ) ")
 
     # instance for model ddb
-    tournament = Tournament(name, place, date, time, round_tourne, description)
+    tournament = Tournament(name, place, date, time, round_tourne, description, status)
 
     return tournament
 
@@ -86,7 +88,7 @@ def add_players():
     else:
         logging.info("la saisie n'est pas valide")
         return add_players()
-    sexe = str(input("Renseigner votre genre"))
+    sexe = str(input("Renseigner votre genre ( H ou F ):"))
     if nom and date_b and sexe:
         try:
             rank = int(input("Renseigner votre classement "))
@@ -123,11 +125,11 @@ def date_begin_and_end():
     """Function to creat date for match"""
     date_begin = input(
         " entrer le debut du round en renseignement "
-        "l'heure et la date(xx:xx XX/XX/XX) : "
+        " la date(XX/XX/XX) : "
     )
     date_end = input(
         " entrer la fin du round en renseignement "
-        "l'heure et la date(xx:xx XX/XX/XX) : "
+        " la date( XX/XX/XX) : "
     )
 
     return date_begin, date_end

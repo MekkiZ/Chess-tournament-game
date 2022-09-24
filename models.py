@@ -4,7 +4,7 @@
 class Tournament:
     """Creat models tournante for dbb."""
 
-    def __init__(self, name, place, date, time, rounds, description, nb_tour=4):
+    def __init__(self, name, place, date, time, rounds, description, status, nb_tour=4):
         """We creat models for with parameters for dbb."""
         self.name = name
         self.place = place
@@ -13,6 +13,7 @@ class Tournament:
         self.time = time
         self.round_number = rounds
         self.description = description
+        self.status = status
 
     def __str__(self):
         """The function returns a user-friendly description of an object."""

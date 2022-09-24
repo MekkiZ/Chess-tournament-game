@@ -17,6 +17,7 @@ user = Query()
 nb_players = 8
 nb_player_for_swiss = int(nb_players / 2)
 nombre_tour = 4
+liste_nb = []
 
 
 class Controllers:
@@ -25,8 +26,10 @@ class Controllers:
     def __init__(self):
         """Global variables."""
         # models
+
         self.rank_save_for_replace = ""
         self.name_player_switch_rank = ""
+        self.name_tournante = ""
         self.point = float(1)
         self.tournant_data = []
         self.data_rank_players = []
@@ -47,12 +50,15 @@ class Controllers:
                               2 - change rank players
                               3 - shutdown the program.
         """
+
         choix_option = main_interface()
         if choix_option == "1":
             self.create_tournant()
         elif choix_option == "2":
             self.admin_power_change_rank()
         elif choix_option == "3":
+            self.verify_tournament()
+        elif choix_option == "4":
             sys.exit()
         else:
             sys.exit()
@@ -79,8 +85,7 @@ class Controllers:
                 "player_rank": player.rank,
                 "player_score": player.score,
             }
-
-            self.players_table.truncate()  # clear the table first
+            self.players_table.truncate()
             self.table_save_players.append(serialized_players)
             self.players_table.insert_multiple(self.table_save_players)
 
@@ -93,18 +98,21 @@ class Controllers:
         :return: Return data for traitement for the other version.
         """
         self.tournant_data.append(create_tournant())
+
         for tournoi in self.tournant_data:
+            self.name_tournante = tournoi.name
             serialized_tournoi = {
                 "tournoi_name": tournoi.name,
                 "tournoi_place": tournoi.place,
                 "tournoi_date": tournoi.date,
                 "tournoi_tour": nombre_tour,
                 "tournoi_time": tournoi.time,
-                "tournoi_number_round": [],
+                "tournoi_number_round": liste_nb,
                 "tournoi_desc": tournoi.description,
+                "tournoi_status": tournoi.status
             }
 
-            self.tournoi_table.truncate()
+            # self.tournoi_table.truncate()
             self.tournoi_table.insert(serialized_tournoi)
 
         return self.tournant_save_data
@@ -133,13 +141,16 @@ class Controllers:
 
         :return: False if the error has been detected.
         """
+        # name_tour = self.table_round.search(user.tour_number == "4")
         try:
             while True:
                 nb_round = input(str("sélectionner votre round "
                                      "( indiquer la lettre 'q' pour arrêter le tournoi ): "))
                 if nb_round == "q":
-                    break
+                    self.created_round()
+                    return self.interface_main_manu()
                 if nb_round == "1":
+                    liste_nb.append(nb_round)
                     print(f"round {nb_round}")
                     date_begin, date_end = date_begin_and_end()
                     for x in range(0, nb_player_for_swiss):
@@ -160,12 +171,15 @@ class Controllers:
                             0,
                         )
                         rounds = Round(nb_round, matchs_tour, date_begin, date_end)
+                        print(rounds)
                         self.tours.append(rounds)
+                        print(self.tours)
                 else:
+                    liste_nb.append(nb_round)
                     date_begin, date_end = date_begin_and_end()
                     self.create_other_round(nb_round, date_begin, date_end)
-        except Exception as ex:
-            logging.error(ex)
+        except ValueError:  # Exception as ex:
+            print("problem here")  # logging.error(ex)
             return False
 
     def body_algo_match(self, param1, param2, param3, param4, param5):
@@ -223,7 +237,9 @@ class Controllers:
             rounds_other = Round(
                 Round_number, list(matchs_tours_other_name), DateBegin, DateEnd
             )
+            print(rounds_other)
             self.tours.append(rounds_other)
+            print(self.tours)
             self.body_algo_match(
                 player_1,
                 player_2,
@@ -244,6 +260,7 @@ class Controllers:
                 "tour_matchs": tours.match,
                 "tour_debut": tours.date_begin,
                 "tour_fin": tours.date_end,
+                "tour_nom": self.name_tournante,
             }
             self.table_round.truncate()
             self.match.append(serialized_tours)
@@ -256,11 +273,12 @@ class Controllers:
         This code serve to switch the rank of players to avoid same rank
         """
         get_players_name_and_rank_score()
-        menu_main = input("si vous voulez revenir au menou principale veuillez taper 'q', sinon taper c ")
+        menu_main = input("si vous voulez revenir au menu principal veuillez taper 'q', sinon taper c: ")
         if menu_main == "q":
-            return main_interface()
+
+            return self.interface_main_manu()
         elif menu_main == "c":
-            nom_joueur = input("veuillez entrer le nom du joeur concerné : ")
+            nom_joueur = input("veuillez entrer le nom du joueur concerné : ")
             # search  in ddb
             name_for_take_rank = self.players_table.search(user.players_name == nom_joueur)
             for i in name_for_take_rank:
@@ -278,8 +296,31 @@ class Controllers:
             )
             return Controllers.admin_power_change_rank(self)
 
+    def verify_tournament(self):
+        """
+            This function has purpose to create table for admin, he can see all tournaments
+        """
+        liste = []
+        for i in self.tournoi_table:
+            list_tourna = [i["tournoi_name"], i["tournoi_place"], i["tournoi_date"], i["tournoi_tour"],
+                           i["tournoi_time"], i["tournoi_number_round"], i["tournoi_desc"], i["tournoi_status"]
+                           ]
+            liste.append(list_tourna)
+
+        col_names = ["Nom", "Lieu", "Date", "Nb Tours",
+                     "Temp", "Nb Round", "Description", "Status"]
+        print(tabulate(liste, headers=col_names, tablefmt="fancy_grid"))
+        menu_main = input("si vous voulez revenir au menou principale veuillez taper 'q', sinon taper c: ")
+        if menu_main == "q":
+            self.interface_main_manu()
+        elif menu_main == "c":
+            self.create_sys_swiss_paring()
+
 
 def get_players_name_and_rank_score():
+    """
+    This function has purpose to create table for admin, he can see all users
+    """
     liste = []
     for i in players_table:
         list_players = [i["players_name"], i["player_rank"], i["player_score"]]
@@ -294,8 +335,6 @@ def main():
     controller.interface_main_manu()
     controller.add_player()
     controller.add_players_data()
-    controller.create_tournant()
     controller.get_rank_players()
     controller.create_sys_swiss_paring()
     controller.created_round()
-    get_players_name_and_rank_score()
