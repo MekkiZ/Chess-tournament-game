@@ -162,7 +162,6 @@ class Controllers:
                             self.data_rank_players[x],
                             self.data_rank_players[x + nb_player_for_swiss],
                         )
-
                         self.body_algo_match(
                             match_round_1,
                             match_round_1_adversaire,
@@ -171,9 +170,7 @@ class Controllers:
                             0,
                         )
                         rounds = Round(nb_round, matchs_tour, date_begin, date_end)
-                        print(rounds)
                         self.tours.append(rounds)
-                        print(self.tours)
                 else:
                     liste_nb.append(nb_round)
                     date_begin, date_end = date_begin_and_end()
@@ -237,9 +234,7 @@ class Controllers:
             rounds_other = Round(
                 Round_number, list(matchs_tours_other_name), DateBegin, DateEnd
             )
-            print(rounds_other)
             self.tours.append(rounds_other)
-            print(self.tours)
             self.body_algo_match(
                 player_1,
                 player_2,
